@@ -1,4 +1,13 @@
-import pyperclip
+# import pyperclip if it exists, if it does not then don't try to use it
+try:
+    __import__('pyperclip')
+except ImportError:
+    clpbrd = False
+else:
+    import pyperclip
+    clpbrd = True
+
+# import pyperclip
 
 # format is:
 # ss-gg-yyt-p-xnn descriptor
@@ -37,5 +46,9 @@ descriptor = input('Description: ')
 
 # generate file name
 fname = f'{ss}-{gg}-{yyt}-{p}-{x}{nn} {descriptor}'
-pyperclip.copy(fname)
-print(f'Filename:\n {fname}\nhas been copied to the clipboard.')
+
+if clpbrd:
+    pyperclip.copy(fname)
+    print(f'Filename:\n {fname}\nhas been copied to the clipboard.')
+else:
+    print(f'Filename:\n {fname}')
