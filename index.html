@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title>ENGS 146 File Namer</title>
+</head>
+
+<body>
+    <div class="container" style="width: 50%;">
+        <div class="row mb-3">
+            <div class="h1" id="preview">ss-gg-yyt-p-xnn descriptor</div>
+            <h5>ss-gg-yyt-p-xnn descriptor (<a href="https://docs.google.com/spreadsheets/d/1IDBBB4lLupp797UzcFfL5uFn_7L8dNkN5XJKesDY_u8/">template</a>)</h5>
+            <button type="button" class="btn btn-success" onclick="copy_to_clipboard()">Copy</button>
+        </div>
+        <div class="row mb-3">
+            <!-- ss (student number) -->
+            <label for="sel_ss">ss (student number)</label>
+            <select name="sel_ss" id="sel_ss" onchange="update()">
+                <option value="09">09 - Anoush</option>
+                <option value="08">08 - Bridger</option>
+                <option value="07">07 - Vann</option>
+            </select>
+
+            <!-- gg (group number) -->
+            <label for="sel_gg">gg (group number)</label>
+            <input type="text" id="sel_gg" name="sel_gg" value="00" onchange="update()" onkeyup="update()">
+
+            <!-- yyt (year and term code) -->
+            <label for="sel_yyt">yyt (year and term code)</label>
+            <input type="text" id="sel_yyt" name="sel_yyt" value="21S" onchange="update()" onkeyup="update()" disabled>
+
+            <!-- p (project identifier) -->
+            <label for="sel_p">p (project identifier)</label>
+            <select name="sel_p" id="sel_p" onchange="update()">
+                <option value="0">0 - No associated project</option>
+                <option value="1">1 - CAD Lessons</option>
+                <option value="2">2 - 3D Printer Mods</option>
+                <option value="3">3 - Fidget Spinner</option>
+                <option value="4">4 - Chronometer</option>
+            </select>
+
+            <!-- x (drawing identifier) -->
+            <label for="sel_x">x (drawing identifier)</label>
+            <select name="sel_x" id="sel_x" onchange="update()">
+                <option value="P">Part</option>
+                <option value="A">Assembly</option>
+            </select>
+
+            <!-- nn (part number) -->
+            <label for="sel_nn">nn (part number)</label>
+            <input type="text" id="sel_nn" name="sel_nn" onchange="update()" onkeyup="update()">
+
+            <!-- descriptor (identifying string) -->
+            <label for="sel_descriptor">descriptor (identifying string)</label>
+            <input type="text" id="sel_descriptor" name="sel_descriptor" onchange="update()" onkeyup="update()">
+        </div>
+        <div class="row">
+            <p>Written by Anoush Khan (<a href="https://github.com/doubleaykay/engs146_file_namer">Github</a>)</p>
+        </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // init relevant vars
+        var ss;
+        var gg;
+        var yyt;
+        var p;
+        var x;
+        var nn;
+        var descriptor;
+
+        var fname;
+
+        // get parameters from gui
+        function get_params() {
+            ss = document.getElementById("sel_ss").value;
+            gg = document.getElementById("sel_gg").value;
+            yyt = document.getElementById("sel_yyt").value;
+            p = document.getElementById("sel_p").value;
+            x = document.getElementById("sel_x").value;
+            nn = document.getElementById("sel_nn").value;
+            descriptor = document.getElementById("sel_descriptor").value;
+
+            if (nn == "") {
+                nn = "nn";
+            };
+
+            if (descriptor == "") {
+                descriptor = "descriptor";
+            };
+        };
+
+        // set preview text
+        function set_preview() {
+            fname = ss + "-" + gg + "-" + yyt + "-" + p + "-" + x + nn + " " + descriptor;
+            document.getElementById("preview").innerHTML = fname;
+        };
+
+        // update preview
+        function update() {
+            get_params()
+            set_preview()
+        };
+
+        function copy_to_clipboard() {
+            // https://stackoverflow.com/a/1173319
+            // select text
+            if (document.selection) { // IE
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById("preview"));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById("preview"));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+            }
+
+            // copy text
+            document.execCommand("copy");
+
+            // https://stackoverflow.com/a/3169849
+            // clear selection
+            if (window.getSelection) {
+                if (window.getSelection().empty) {  // Chrome
+                    window.getSelection().empty();
+                } else if (window.getSelection().removeAllRanges) {  // Firefox
+                    window.getSelection().removeAllRanges();
+                }
+            } else if (document.selection) {  // IE?
+                document.selection.empty();
+            }
+        }
+
+        // on run
+        update();
+    </script>
+</body>
+
+</html>
