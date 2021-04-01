@@ -1,7 +1,7 @@
 # engs146_file_namer
 generate file names for engs 146 files
 
-## web app
+## [web app](https://doubleaykay.github.io/engs146_file_namer/)
 enter information, see information in live preview on top, click button to copy to clipboard. easy
 
 ## python
